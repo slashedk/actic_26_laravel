@@ -1,7 +1,7 @@
 @php
     $links = [
         ['label' => 'Accueil',        'route' => 'home',       'pattern' => '/'],
-        ['label' => 'Liste des jobs', 'route' => 'jobs.index', 'pattern' => 'alljobs'],
+        ['label' => 'Liste des offres', 'route' => 'jobs.index', 'pattern' => 'alljobs'],
     ];
 @endphp
 
@@ -41,7 +41,7 @@
                               {{ request()->is('job/create')
                                     ? 'bg-[#1b1b18] text-white dark:bg-[#eeeeec] dark:text-[#1C1C1A]'
                                     : 'hover:bg-gray-100 dark:hover:bg-cyan-50' }}">
-                        Ajouter un job
+                        Ajouter une offre
                     </a>
                 </li>
             @endauth
