@@ -4,9 +4,29 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Ajouter un poste</title>
-    @vite(['resources/css/app.css', 'resources/js/app.js'])
+    @if (file_exists(public_path('build/manifest.json')) || file_exists(public_path('hot')))
+        @vite(['resources/css/app.css', 'resources/js/app.js'])
+    @endif
 </head>
 <body class="min-h-screen flex flex-col bg-gradient-to-br from-slate-100 via-white to-blue-50">
+
+@php
+    $piecesDisponibles = [
+        'CV',
+        "Photo d'identité",
+        'Lettre de motivation',
+        "Copie de la pièce d'identité",
+        'Diplômes',
+        'Extrait de casier judiciaire',
+    ];
+    $piecesParDefaut = ['CV', "Photo d'identité"];
+
+    // Après une erreur de validation, on garde exactement ce qui était coché
+    $piecesCochees = old('pieces_a_fournir', session()->hasOldInput() ? [] : $piecesParDefaut);
+
+    $classeChamp = 'w-full rounded-xl border bg-gray-50 px-4 py-3 text-gray-800 placeholder-gray-400 transition focus:bg-white focus:border-blue-500 focus:ring-4 focus:ring-blue-100 focus:outline-none';
+    $classeLabel = 'block text-sm font-semibold text-gray-700 mb-1.5';
+@endphp
 
     {{-- Barre de navigation (en haut) --}}
     <x-navbar />
@@ -25,7 +45,7 @@
             <div class="bg-white rounded-2xl shadow-lg ring-1 ring-gray-100 p-8">
 
                 @if (session('success'))
-                    <div class="mb-6 rounded-lg bg-green-50 border border-green-200 text-green-700 px-4 py-3 text-sm">
+                    <div role="status" class="mb-6 rounded-lg bg-green-50 border border-green-200 text-green-700 px-4 py-3 text-sm">
                         {{ session('success') }}
                     </div>
                 @endif
@@ -33,61 +53,178 @@
                 <form action="{{ url('/job/add') }}" method="POST" enctype="multipart/form-data" class="space-y-6">
                     @csrf
 
-                    {{-- Poste --}}
+                    {{-- Titre --}}
                     <div>
-                        <label for="poste" class="block text-sm font-semibold text-gray-700 mb-1.5">Poste</label>
+                        <label for="titre" class="{{ $classeLabel }}">Titre de l'offre</label>
                         <input
                             type="text"
-                            id="poste"
-                            name="poste"
-                            value="{{ old('poste') }}"
+                            id="titre"
+                            name="titre"
+                            value="{{ old('titre') }}"
+                            maxlength="120"
+                            required
                             placeholder="Ex : Développeur web"
-                            class="w-full border bg-gray-50 px-4 py-3 text-gray-800 placeholder-gray-400 transition focus:bg-white focus:border-blue-500 focus:ring-4 focus:ring-blue-100 focus:outline-none {{ $errors->has('poste') ? 'border-red-400' : 'border-gray-200' }}"
+                            class="{{ $classeChamp }} {{ $errors->has('titre') ? 'border-red-400' : 'border-gray-200' }}"
                         >
-                        @error('poste')
+                        @error('titre')
+                            <p class="mt-1.5 text-sm text-red-600">{{ $message }}</p>
+                        @enderror
+                    </div>
+
+                    {{-- Société --}}
+                    <div>
+                        <label for="societe" class="{{ $classeLabel }}">Société</label>
+                        <input
+                            type="text"
+                            id="societe"
+                            name="societe"
+                            value="{{ old('societe') }}"
+                            maxlength="120"
+                            required
+                            autocomplete="organization"
+                            placeholder="Ex : Actic Group"
+                            class="{{ $classeChamp }} {{ $errors->has('societe') ? 'border-red-400' : 'border-gray-200' }}"
+                        >
+                        @error('societe')
                             <p class="mt-1.5 text-sm text-red-600">{{ $message }}</p>
                         @enderror
                     </div>
 
                     {{-- Date limite --}}
                     <div>
-                        <label for="date_limite" class="block text-sm font-semibold text-gray-700 mb-1.5">Date limite</label>
+                        <label for="date_limite" class="{{ $classeLabel }}">Date limite de candidature</label>
                         <input
                             type="date"
                             id="date_limite"
                             name="date_limite"
                             value="{{ old('date_limite') }}"
-                            class="w-full rounded-xl border bg-gray-50 px-4 py-3 text-gray-800 transition focus:bg-white focus:border-blue-500 focus:ring-4 focus:ring-blue-100 focus:outline-none {{ $errors->has('date_limite') ? 'border-red-400' : 'border-gray-200' }}"
+                            required
+                            class="{{ $classeChamp }} {{ $errors->has('date_limite') ? 'border-red-400' : 'border-gray-200' }}"
                         >
                         @error('date_limite')
                             <p class="mt-1.5 text-sm text-red-600">{{ $message }}</p>
                         @enderror
                     </div>
 
-                    {{-- Pièce à fournir --}}
+                    {{-- Âges --}}
+                    <div class="grid grid-cols-1 gap-6 sm:grid-cols-2">
+                        <div>
+                            <label for="age_min" class="{{ $classeLabel }}">
+                                Âge minimum <span class="font-normal text-gray-400">(facultatif)</span>
+                            </label>
+                            <input
+                                type="number"
+                                id="age_min"
+                                name="age_min"
+                                value="{{ old('age_min') }}"
+                                min="0"
+                                max="120"
+                                inputmode="numeric"
+                                placeholder="18"
+                                class="{{ $classeChamp }} {{ $errors->has('age_min') ? 'border-red-400' : 'border-gray-200' }}"
+                            >
+                            @error('age_min')
+                                <p class="mt-1.5 text-sm text-red-600">{{ $message }}</p>
+                            @enderror
+                        </div>
+
+                        <div>
+                            <label for="age_max" class="{{ $classeLabel }}">
+                                Âge maximum <span class="font-normal text-gray-400">(facultatif)</span>
+                            </label>
+                            <input
+                                type="number"
+                                id="age_max"
+                                name="age_max"
+                                value="{{ old('age_max') }}"
+                                min="0"
+                                max="120"
+                                inputmode="numeric"
+                                placeholder="35"
+                                class="{{ $classeChamp }} {{ $errors->has('age_max') ? 'border-red-400' : 'border-gray-200' }}"
+                            >
+                            @error('age_max')
+                                <p class="mt-1.5 text-sm text-red-600">{{ $message }}</p>
+                            @enderror
+                        </div>
+                    </div>
+
+                    {{-- Lieu de dépôt --}}
                     <div>
-                        <label for="piece_a_fournir" class="block text-sm font-semibold text-gray-700 mb-1.5">Pièce à fournir</label>
+                        <label for="lieu_depot" class="{{ $classeLabel }}">Lieu de dépôt des dossiers</label>
                         <input
                             type="text"
-                            id="piece_a_fournir"
-                            name="piece_a_fournir"
-                            value="{{ old('piece_a_fournir') }}"
-                            placeholder="Ex : CV et lettre de motivation"
-                            class="w-full rounded-xl border bg-gray-50 px-4 py-3 text-gray-800 placeholder-gray-400 transition focus:bg-white focus:border-blue-500 focus:ring-4 focus:ring-blue-100 focus:outline-none {{ $errors->has('piece_a_fournir') ? 'border-red-400' : 'border-gray-200' }}"
+                            id="lieu_depot"
+                            name="lieu_depot"
+                            value="{{ old('lieu_depot', 'sieges') }}"
+                            maxlength="200"
+                            required
+                            class="{{ $classeChamp }} {{ $errors->has('lieu_depot') ? 'border-red-400' : 'border-gray-200' }}"
                         >
-                        @error('piece_a_fournir')
+                        @error('lieu_depot')
                             <p class="mt-1.5 text-sm text-red-600">{{ $message }}</p>
                         @enderror
                     </div>
 
-                    {{-- Photo --}}
+                    {{-- Contact --}}
                     <div>
-                        <label for="photo" class="block text-sm font-semibold text-gray-700 mb-1.5">Photo</label>
+                        <label for="contact" class="{{ $classeLabel }}">Informations de contact</label>
+                        <input
+                            type="text"
+                            id="contact"
+                            name="contact"
+                            value="{{ old('contact', '773 4545') }}"
+                            maxlength="200"
+                            required
+                            placeholder="Téléphone ou e-mail"
+                            class="{{ $classeChamp }} {{ $errors->has('contact') ? 'border-red-400' : 'border-gray-200' }}"
+                        >
+                        <p class="mt-1.5 text-xs text-gray-400">
+                            Un numéro de téléphone ou une adresse e-mail pour joindre le recruteur.
+                        </p>
+                        @error('contact')
+                            <p class="mt-1.5 text-sm text-red-600">{{ $message }}</p>
+                        @enderror
+                    </div>
+
+                    {{-- Pièces à fournir --}}
+                    <fieldset>
+                        <legend class="{{ $classeLabel }}">
+                            Pièces à fournir
+                            <span class="font-normal text-gray-400">(cochez celles que le candidat doit envoyer)</span>
+                        </legend>
+                        <div class="grid grid-cols-1 gap-2 sm:grid-cols-2">
+                            @foreach ($piecesDisponibles as $piece)
+                                <label class="flex items-center gap-2 rounded-xl border border-gray-200 bg-gray-50 px-3 py-2 text-sm text-gray-700">
+                                    <input
+                                        type="checkbox"
+                                        name="pieces_a_fournir[]"
+                                        value="{{ $piece }}"
+                                        @checked(in_array($piece, $piecesCochees, true))
+                                        class="h-4 w-4 rounded border-gray-300 accent-blue-600"
+                                    >
+                                    {{ $piece }}
+                                </label>
+                            @endforeach
+                        </div>
+                        @error('pieces_a_fournir')
+                            <p class="mt-1.5 text-sm text-red-600">{{ $message }}</p>
+                        @enderror
+                        @error('pieces_a_fournir.*')
+                            <p class="mt-1.5 text-sm text-red-600">{{ $message }}</p>
+                        @enderror
+                    </fieldset>
+
+                    {{-- Image --}}
+                    <div>
+                        <label for="photo" class="{{ $classeLabel }}">
+                            Image <span class="font-normal text-gray-400">(facultatif, JPG, PNG ou WebP, 5 Mo max)</span>
+                        </label>
                         <input
                             type="file"
                             id="photo"
                             name="photo"
-                            accept='image/*'
+                            accept="image/jpeg,image/png,image/webp"
                             class="w-full text-sm text-gray-600 rounded-xl border border-dashed bg-gray-50 cursor-pointer file:mr-4 file:py-3 file:px-5 file:border-0 file:bg-blue-600 file:text-white file:font-semibold hover:file:bg-blue-700 {{ $errors->has('photo') ? 'border-red-400' : 'border-gray-300' }}"
                         >
                         @error('photo')
@@ -103,7 +240,7 @@
                         </a>
                         <button
                             type="submit"
-                            class="flex-1 rounded-xl bg-blue-600 px-4 py-3 font-semibold shadow-md shadow-blue-200 hover:bg-blue-700 focus:ring-4 focus:ring-blue-200 focus:outline-none transition"
+                            class="flex-1 rounded-xl bg-blue-600 px-4 py-3 font-semibold text-white shadow-md shadow-blue-200 hover:bg-blue-700 focus:ring-4 focus:ring-blue-200 focus:outline-none transition"
                         >
                             Ajouter le poste
                         </button>
