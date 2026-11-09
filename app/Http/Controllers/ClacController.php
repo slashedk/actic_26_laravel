@@ -21,7 +21,7 @@ class ClacController extends Controller
         'lieu_depot'         => ['required', 'string', ],
         'contact'            => ['required', 'string', ],
         'pieces_a_fournir'   => ['required', 'string'],
-        'photo'              => ['nullable', 'image', 'mimes:jpg,jpeg,png,webp', 'max:5120'],
+        'image_url'              => ['nullable', 'image', 'mimes:jpg,jpeg,png,webp', 'max:5120'],
         ]);
 
         // Enregistre le fichier et garde uniquement son chemin

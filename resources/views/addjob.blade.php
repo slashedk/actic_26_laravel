@@ -202,7 +202,7 @@
                         <input
                             type="file"
                             id="photo"
-                            name="photo"
+                            name="image_url"
                             accept="image/jpeg,image/png,image/webp"
                             class="w-full text-sm text-gray-600 rounded-xl border border-dashed bg-gray-50 cursor-pointer file:mr-4 file:py-3 file:px-5 file:border-0 file:bg-blue-600 file:text-white file:font-semibold hover:file:bg-blue-700 {{ $errors->has('photo') ? 'border-red-400' : 'border-gray-300' }}"
                         >
