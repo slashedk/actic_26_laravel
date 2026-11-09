@@ -2212,7 +2212,20 @@
                             <h2 class="text-sm font-semibold text-gray-800 mb-1 truncate" title="{{ $job->poste }}">
                                 {{ $job->titre }}
                             </h2>
+                            
+                            <p class="text-[11px] text-gray-500 mb-2 line-clamp-2">
+                                <span class="font-medium text-gray-600">Société :</span>
+                                {{ $job->societe }}
+                            </p>
 
+                            <p class="text-[11px] text-gray-500 mb-2 line-clamp-2">
+                                <span class="font-medium text-gray-600">Contact :</span>
+                                {{ $job->contact }}
+                            </p>
+                            <p class="text-[11px] text-gray-500 mb-2 line-clamp-2">
+                                <span class="font-medium text-gray-600">lieu(x) de dépôt(s) :</span>
+                                {{ $job->pieces_a_fournir }}
+                            </p>
                             <p class="text-[11px] text-gray-500 mb-2 line-clamp-2">
                                 <span class="font-medium text-gray-600">Pièce à fournir :</span>
                                 {{ $job->pieces_a_fournir }}
