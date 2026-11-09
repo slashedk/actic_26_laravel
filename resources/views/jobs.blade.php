@@ -44,12 +44,16 @@
 
                         <div class="px-3 pb-3 flex-1 flex flex-col">
                             <h2 class="text-sm font-semibold text-gray-800 mb-1 truncate">
-                                Titre du poste: {{ $job->poste }}
+                                Titre du poste: {{ $job->societe }}
+                            </h2>
+
+                            <h2 class="text-sm font-semibold text-gray-800 mb-1 truncate">
+                                Titre du poste: {{ $job->titre }}
                             </h2>
 
                             <p class="text-[11px] text-gray-500 mb-2 line-clamp-2">
                                 <span class="font-medium text-gray-600">Pièce à fournir :</span>
-                                {{ $job->piece_a_fournir }}
+                                {{ $job->pieces_a_fournir }}
                             </p>
 
                             @if ($job->age_min !== null)
