@@ -43,6 +43,16 @@ Route::get('/myjobs', [UserController::class, 'jobsPerUSer']);
 Route::post('/job/add', [ClacController::class, 'addJob']);
 
 
+Route::middleware('auth')->group(function () {
+    Route::get('/job/{job}/edit', [ClacController::class, 'edit'])->name('job.edit');
+    Route::put('/job/{job}', [ClacController::class, 'update'])->name('job.update');
+    Route::delete('/job/{job}', [ClacController::class, 'destroy'])->name('job.destroy');
+});
+
+
+
+
+
 
 
 

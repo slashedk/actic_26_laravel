@@ -19,7 +19,10 @@
             <h1 class="text-3xl font-bold text-gray-800">Liste des offres</h1>
 
         </div>
-
+        {{-- Barre de recherche --}}
+<div class="mb-8">
+    <x-search-bar />
+</div>
         @if ($jobs->count())
             {{-- Grille de cartes --}}
             <div class="grid grid-cols-1 gap-5 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4">
@@ -74,7 +77,7 @@
         @else
             {{-- Aucun résultat --}}
             <div class="bg-white rounded-2xl shadow-sm ring-1 ring-gray-100 p-10 text-center text-gray-500">
-                Aucun poste enregistré pour le moment.
+                Aucune offre enregistrée pour le moment.
             </div>
         @endif
 
