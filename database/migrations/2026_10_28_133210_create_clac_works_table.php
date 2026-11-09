@@ -12,7 +12,7 @@ return new class extends Migration
      */
     public function up(): void
     {
-        Schema::create('jobs', function (Blueprint $table) {
+        Schema::create('clac_works', function (Blueprint $table) {
             $table->id();
             $table->string('titre');
             $table->date('date_limite');

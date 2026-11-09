@@ -11,10 +11,7 @@ return new class extends Migration
      */
     public function up(): void
     {
-        Schema::table('clac_works', function (Blueprint $table) {
-            $table->integer('age_max')->nullable();
-            $table->integer('age_min')->nullable()->default(19);
-        });
+        
     }
 
     /**
