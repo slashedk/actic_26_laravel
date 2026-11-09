@@ -63,18 +63,23 @@ public function update(Request $request, ClacWork $job): RedirectResponse
     abort_unless($job->user_id === $request->user()->id, 403);
 
     $validated = $request->validate([
-        'poste' => ['required', 'string', 'max:255'],
-        'date_limite' => ['required', 'date'],
-        'piece_a_fournir' => ['required', 'string', 'max:255'],
-        'photo' => ['nullable', 'image'],
-    ]);
+            'titre'              => ['required', 'string', 'min:3', 'max:120'],
+        'societe'            => ['required', 'string', 'min:2', 'max:120'],
+        'date_limite'        => ['required', 'date'],
+        'age_min'            => ['nullable', 'integer', 'min:0', 'max:120'],
+        'age_max'            => ['nullable', 'integer', 'min:0', 'max:120'],
+        'lieu_depot'         => ['required', 'string', ],
+        'contact'            => ['required', 'string', ],
+        'pieces_a_fournir'   => ['required', 'string'],
+        'image_url'              => ['nullable', 'image', 'mimes:jpg,jpeg,png,webp', 'max:5120'],
+        ]);
 
-    if ($request->hasFile('photo')) {
+    if ($request->hasFile('image_url')) {
         // Supprime l'ancienne image puis enregistre la nouvelle
         Storage::disk('public')->delete($job->photo);
-        $validated['photo'] = $request->file('photo')->store('photos', 'public');
+        $validated['image_url'] = $request->file('image_url')->store('photos', 'public');
     } else {
-        unset($validated['photo']);
+        unset($validated['image_url']);
     }
 
     $job->update($validated);
