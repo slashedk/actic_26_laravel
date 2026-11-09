@@ -2224,7 +2224,7 @@
                             </p>
                             <p class="text-[11px] text-gray-500 mb-2 line-clamp-2">
                                 <span class="font-medium text-gray-600">Lieu(x) de dépôt(s) :</span>
-                                {{ $job->pieces_a_fournir }}
+                                {{ $job->lieu_depot }}
                             </p>
                             <p class="text-[11px] text-gray-500 mb-2 line-clamp-2">
                                 <span class="font-medium text-gray-600">Pièce à fournir :</span>
