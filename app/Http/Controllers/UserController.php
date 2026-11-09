@@ -77,7 +77,7 @@ class UserController extends Controller
     {
         $jobs = $req->user()
             ->desOffres()
-            ->when($req->filled('search'), fn ($q) => $q->where('poste', 'like', '%' . $req->search . '%'))
+            ->when($req->filled('search'), fn ($q) => $q->where('titre', 'like', '%' . $req->search . '%'))
             ->paginate(8);
 
         return view('myjobs', compact('jobs'));
