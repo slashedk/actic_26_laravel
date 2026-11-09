@@ -8,7 +8,7 @@
         @vite(['resources/css/app.css', 'resources/js/app.js'])
     @endif
 </head>
-<body class="min-h-screen flex flex-col bg-gradient-to-br from-slate-100 via-white to-blue-50">
+<body class="min-h-screen flex flex-col bg-linear-to-br from-slate-100 via-white to-blue-50">
 
 @php
     $classeChamp = 'w-full rounded-xl border bg-gray-50 px-4 py-3 text-gray-800 placeholder-gray-400 transition focus:bg-white focus:border-blue-500 focus:ring-4 focus:ring-blue-100 focus:outline-none';
@@ -203,7 +203,7 @@
                         @if(!empty($job->image_url))
                             <div class="mb-3">
                                 <p class="text-xs text-gray-500 mb-1">Image actuelle :</p>
-                                <img src="{{ asset('storage/' . $job->image_url) }}" alt="Aperçu" class="h-20 w-auto rounded-lg object-cover border">
+                                <img src="{{ $job->image_url }}" alt="{{ $job->titre }}" class="h-20 w-auto rounded-lg object-cover border">
                             </div>
                         @endif
                         <input
