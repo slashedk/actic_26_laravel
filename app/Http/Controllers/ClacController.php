@@ -25,7 +25,7 @@ class ClacController extends Controller
         ]);
 
         // Enregistre le fichier et garde uniquement son chemin
-        $validated['photo'] = $request->file('photo')->store('photos', 'public');
+        $validated['image_url'] = $request->file('image_url')->store('photos', 'public');
 
         $request->user()->desOffres()->create($validated);
 
