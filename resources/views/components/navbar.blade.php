@@ -40,7 +40,7 @@
                        class="px-4 py-2 rounded-md text-sm font-medium transition
                               {{ request()->is('job/create')
                                     ? 'bg-[#1b1b18] text-white dark:bg-[#eeeeec] dark:text-[#1C1C1A]'
-                                    : 'hover:bg-gray-100 dark:hover:bg-gray-900' }}">
+                                    : 'hover:bg-gray-100 dark:hover:bg-cyan-50' }}">
                         Ajouter un job
                     </a>
                 </li>
@@ -52,7 +52,7 @@
                     <form action="{{ url('/logout') }}" method="POST">
                         @csrf
                         <button type="submit"
-                                class="px-4 py-2 rounded-md text-sm font-medium transition hover:bg-gray-100 dark:hover:bg-gray-900">
+                                class="px-4 py-2 rounded-md text-sm font-medium transition hover:bg-gray-100 dark:hover:bg-cyan-50">
                             Déconnexion
                         </button>
                     </form>
@@ -61,7 +61,7 @@
                        class="px-4 py-2 rounded-md text-sm font-medium transition
                               {{ request()->is('login')
                                     ? 'bg-[#1b1b18] text-white dark:bg-[#eeeeec] dark:text-[#1C1C1A]'
-                                    : 'hover:bg-gray-100 dark:hover:bg-gray-900' }}">
+                                    : 'hover:bg-gray-100 dark:hover:bg-cyan-50' }}">
                         Connexion
                     </a>
                 @endauth
