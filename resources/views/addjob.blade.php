@@ -11,19 +11,6 @@
 <body class="min-h-screen flex flex-col bg-gradient-to-br from-slate-100 via-white to-blue-50">
 
 @php
-    $piecesDisponibles = [
-        'CV',
-        "Photo d'identité",
-        'Lettre de motivation',
-        "Copie de la pièce d'identité",
-        'Diplômes',
-        'Extrait de casier judiciaire',
-    ];
-    $piecesParDefaut = ['CV', "Photo d'identité"];
-
-    // Après une erreur de validation, on garde exactement ce qui était coché
-    $piecesCochees = old('pieces_a_fournir', session()->hasOldInput() ? [] : $piecesParDefaut);
-
     $classeChamp = 'w-full rounded-xl border bg-gray-50 px-4 py-3 text-gray-800 placeholder-gray-400 transition focus:bg-white focus:border-blue-500 focus:ring-4 focus:ring-blue-100 focus:outline-none';
     $classeLabel = 'block text-sm font-semibold text-gray-700 mb-1.5';
 @endphp
@@ -188,32 +175,24 @@
                     </div>
 
                     {{-- Pièces à fournir --}}
-                    <fieldset>
-                        <legend class="{{ $classeLabel }}">
-                            Pièces à fournir
-                            <span class="font-normal text-gray-400">(cochez celles que le candidat doit envoyer)</span>
-                        </legend>
-                        <div class="grid grid-cols-1 gap-2 sm:grid-cols-2">
-                            @foreach ($piecesDisponibles as $piece)
-                                <label class="flex items-center gap-2 rounded-xl border border-gray-200 bg-gray-50 px-3 py-2 text-sm text-gray-700">
-                                    <input
-                                        type="checkbox"
-                                        name="pieces_a_fournir[]"
-                                        value="{{ $piece }}"
-                                        @checked(in_array($piece, $piecesCochees, true))
-                                        class="h-4 w-4 rounded border-gray-300 accent-blue-600"
-                                    >
-                                    {{ $piece }}
-                                </label>
-                            @endforeach
-                        </div>
+                    <div>
+                        <label for="pieces_a_fournir" class="{{ $classeLabel }}">Pièces à fournir</label>
+                        <input
+                            type="text"
+                            id="pieces_a_fournir"
+                            name="pieces_a_fournir"
+                            value="{{ old('pieces_a_fournir', "CV, Photo d'identité") }}"
+                            maxlength="500"
+                            placeholder="Ex : CV, Photo d'identité, Lettre de motivation"
+                            class="{{ $classeChamp }} {{ $errors->has('pieces_a_fournir') ? 'border-red-400' : 'border-gray-200' }}"
+                        >
+                        <p class="mt-1.5 text-xs text-gray-400">
+                            Sépare chaque pièce par une virgule.
+                        </p>
                         @error('pieces_a_fournir')
                             <p class="mt-1.5 text-sm text-red-600">{{ $message }}</p>
                         @enderror
-                        @error('pieces_a_fournir.*')
-                            <p class="mt-1.5 text-sm text-red-600">{{ $message }}</p>
-                        @enderror
-                    </fieldset>
+                    </div>
 
                     {{-- Image --}}
                     <div>

@@ -20,7 +20,7 @@ class ClacController extends Controller
         'age_max'            => ['nullable', 'integer', 'min:0', 'max:120'],
         'lieu_depot'         => ['required', 'string', ],
         'contact'            => ['required', 'string', ],
-        'pieces_a_fournir'   => ['nullable'],
+        'pieces_a_fournir'   => ['required', 'string'],
         'image_url'              => ['nullable', 'image', 'mimes:jpg,jpeg,png,webp', 'max:5120'],
         ]);
 
