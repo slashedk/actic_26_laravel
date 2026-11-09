@@ -8,7 +8,7 @@
     @vite(['resources/css/app.css', 'resources/js/app.js'])
 </head>
 
-<body class="min-h-screen flex flex-col bg-gradient-to-br from-slate-100 via-white to-blue-50">
+<body class="min-h-screen flex flex-col bg-linear-to-br from-slate-100 via-white to-blue-50">
 
     <x-navbar />
 
