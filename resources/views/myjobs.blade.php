@@ -2223,7 +2223,7 @@
                                 {{ $job->contact }}
                             </p>
                             <p class="text-[11px] text-gray-500 mb-2 line-clamp-2">
-                                <span class="font-medium text-gray-600">lieu(x) de dépôt(s) :</span>
+                                <span class="font-medium text-gray-600">Lieu(x) de dépôt(s) :</span>
                                 {{ $job->pieces_a_fournir }}
                             </p>
                             <p class="text-[11px] text-gray-500 mb-2 line-clamp-2">
