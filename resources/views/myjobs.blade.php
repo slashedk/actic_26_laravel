@@ -13,7 +13,7 @@
             </style>
         @endif
 </head>
-<body class="bg-gradient-to-br from-slate-100 via-white to-blue-50 min-h-screen">
+<body class="bg-linear-to-br from-slate-100 via-white to-blue-50 min-h-screen">
     <x-navbar />
 
     <div class="max-w-6xl mx-auto px-4 py-10">
@@ -59,8 +59,7 @@
                     <div class="bg-white rounded-2xl shadow-sm ring-1 ring-gray-100 overflow-hidden flex flex-col max-w-xs w-full mx-auto transition hover:-translate-y-1 hover:shadow-lg">
 
                         <div class="p-2">
-                            <img src="{{ asset('storage/' . $job->photo) }}"
-                                 alt="{{ $job->poste }}"
+                            <img src="{{ $job->image_url }}" alt="{{ $job->titre }}"
                                  class="h-28 w-full rounded-xl object-cover">
                         </div>
 
