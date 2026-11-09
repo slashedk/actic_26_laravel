@@ -36,7 +36,7 @@ class ClacController extends Controller
                 $request->file('image_url')->getRealPath(),
                 ['folder' => 'jobs']
             );
-          
+
             $validated['image_url'] = $result['secure_url'];
         }
         $request->user()->desOffres()->create($validated);
@@ -62,9 +62,30 @@ class ClacController extends Controller
 
     public function destroy(Request $request, ClacWork $job): RedirectResponse
     {
+        // Vérification des droits d'accès
         abort_unless($job->user_id === $request->user()->id, 403);
 
-        Storage::disk('public')->delete($job->photo);
+        // Suppression de l'image sur Cloudinary si elle existe
+        if ($job->image_url) {
+            try {
+                $cloudinary = new Cloudinary(env('CLOUDINARY_URL'));
+
+                // Extrait le Public ID de l'URL Cloudinary (ex: "jobs/xyz123" à partir de "https://.../jobs/xyz123.jpg")
+                $parsedUrl = parse_url($job->image_url, PHP_URL_PATH);
+                // Retire le préversion/versioning de Cloudinary s'il y en a et l'extension
+                $pathWithoutExtension = pathinfo($parsedUrl, PATHINFO_DIRNAME) . '/' . pathinfo($parsedUrl, PATHINFO_FILENAME);
+                // Nettoie pour garder uniquement le chemin relatif (ex: "jobs/xyz123")
+                $publicId = ltrim(preg_replace('/^\/v\d+\//', '', $pathWithoutExtension), '/');
+
+                // Supprime l'image sur Cloudinary
+                $cloudinary->uploadApi()->destroy($publicId);
+            } catch (\Exception $e) {
+                // Optionnel : Gérer l'erreur si la suppression Cloudinary échoue, 
+                // mais on laisse continuer pour supprimer l'offre de la base de données.
+            }
+        }
+
+        // Suppression de l'offre dans la base de données Neon
         $job->delete();
 
         return redirect('/myjobs')->with('success', 'Offre supprimée.');
