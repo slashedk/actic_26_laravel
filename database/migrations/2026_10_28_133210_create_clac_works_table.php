@@ -3,6 +3,7 @@
 use Illuminate\Database\Migrations\Migration;
 use Illuminate\Database\Schema\Blueprint;
 use Illuminate\Support\Facades\Schema;
+use App\Models\User;
 
 return new class extends Migration
 {
@@ -11,12 +12,19 @@ return new class extends Migration
      */
     public function up(): void
     {
-        Schema::create('clac_works', function (Blueprint $table) {
+        Schema::create('jobs', function (Blueprint $table) {
             $table->id();
-            $table->string('poste');
+            $table->string('titre');
             $table->date('date_limite');
-            $table->string('piece_a_fournir');
-            $table->string('photo');
+            $table->integer('age_min');
+            $table->integer('age_max');
+            $table->string('pieces_a_fournir');
+            $table->string('image_url');
+            $table->string('lieu_depot');
+            $table->string('societe');
+            $table->string('contact');
+            $table->foreignIdFor(User::class)
+            ->default(1);
             $table->timestamps();
         });
     }

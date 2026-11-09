@@ -18,7 +18,7 @@
                        class="px-4 py-2 rounded-md text-sm font-medium transition
                               {{ request()->is($link['pattern'])
                                     ? 'bg-[#1b1b18] text-white dark:bg-[#eeeeec] dark:text-[#1C1C1A]'
-                                    : 'hover:bg-gray-100 dark:hover:bg-gray-900' }}">
+                                    : 'hover:bg-cyan-300 dark:hover:bg-cyan-300' }}">
                         {{ $link['label'] }}
                     </a>
                 </li>
@@ -31,7 +31,7 @@
                        class="px-4 py-2 rounded-md text-sm font-medium transition
                               {{ request()->is('myjobs')
                                     ? 'bg-[#1b1b18] text-white dark:bg-[#eeeeec] dark:text-[#1C1C1A]'
-                                    : 'hover:bg-gray-100 dark:hover:bg-gray-900' }}">
+                                    : 'hover:bg-cyan-300 dark:hover:bg-cyan-300' }}">
                         Mes offres
                     </a>
                 </li>
