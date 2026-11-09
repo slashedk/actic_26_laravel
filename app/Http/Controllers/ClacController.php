@@ -51,7 +51,7 @@ class ClacController extends Controller
 
         $jobs = ClacWork::query()
             ->when($request->filled('search'), function ($query) use ($request) {
-                $query->where('poste', 'like', '%' . $request->search . '%');
+                $query->where('titre', 'like', '%' . $request->search . '%');
             })
             ->latest()
             ->paginate(9)
